@@ -7,7 +7,7 @@ The following code loads the data in a dataframe dat
 ```r
 setwd("~/github/repdata_peerassessment1")
 dat <- read.csv(unzip("activity.zip", "activity.csv"), header = T, sep = ",")
-head(dat)
+head(dat, 3)
 ```
 
 ```
@@ -15,9 +15,6 @@ head(dat)
 ## 1    NA 2012-10-01        0
 ## 2    NA 2012-10-01        5
 ## 3    NA 2012-10-01       10
-## 4    NA 2012-10-01       15
-## 5    NA 2012-10-01       20
-## 6    NA 2012-10-01       25
 ```
 
 ## What is mean total number of steps taken per day?
@@ -32,7 +29,7 @@ dat1 <- dat %>%
         filter(!is.na(steps))%>%
         summarize(steps = sum(steps))
            
-with(dat1, hist(steps, main = "Steps taken per day", xlab = "Steps"))
+with(dat1, hist(steps, main = "Steps taken a day", xlab = "Steps"))
 abline(v = mean(dat1$steps), col = "red", lwd = 2)
 ```
 
@@ -57,7 +54,7 @@ dat2 <- dat %>%
         filter(!is.na(steps))%>%
         summarize(steps = mean(steps))
 
-with(dat2, plot(x=interval, y = steps, type ="l", main = "Average Daily Activity Pattern"))
+with(dat2, plot(x=interval, y = steps, type ="l", main = "Daily Average Activity Pattern"))
 ```
 
 ![](PA1_template_files/figure-html/unnamed-chunk-3-1.png) 
@@ -127,7 +124,7 @@ This plot shows the differences between activity in weekdays and weekends.
 #modifying dat3, creating a varible for weekday or weekend
 dat3$date <- as.Date(dat3$date)
 dat3$day <- ifelse(weekdays(dat3$date) == "Saturday" | weekdays(dat3$date) ==           "Sunday","weekend","weekday")
-#average steps taken by interval for weekdays or weekends
+#average steps taken by interval for weekdays and weekends
 dat3 <- dat3 %>%
         group_by(interval, day)%>%
         summarize(steps = mean(steps))
